@@ -1,22 +1,117 @@
-.App {
+body
+{
+  background:rgb(180, 199, 98);
   text-align: center;
+  font-family: 'Black Ops One', cursive;
 }
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/************************    controls   **********************************************************************/
+#labels
+{
+  background: blue;
+  width: 70%;
+  height: 140px;
+  margin-left: 15%;
+  padding: 3px;
+  border-radius: 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+#break-label
+{
+  background:rgb(180, 199, 98);
+  padding: 5px;
+  font-size: 20px;
+  flex-grow: 1;
+}
+#session-label
+{
+  background:rgb(180, 199, 98);
+  padding: 5px;
+  font-size: 20px;
+  flex-grow: 1;
+}
+/******************************************************/
+#break-length
+{
+  font-size: 50px;
+  margin-top: 5px;
+}
+#break-buttons
+{
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.time-buttons
+{
+  height: 30px;
+  width: 40px;
+  transition-duration: 0.3s;
+  background: rgb(21, 168, 40);
+  border: 0.1px solid rgba(36, 62, 105, 0.342);
+}
+.time-buttons:hover
+{
+  background: rgb(27, 211, 52);
+}
+.time-buttons:active
+{
+  transform: translateY(2px);
+  background: black;
+  color: rgb(27, 211, 52);;
+}
+/******************************************************/
+#session-length
+{
+  font-size: 50px;
+  margin-top: 5px;
+}
+#session-buttons
+{
+  display: flex;
+  justify-content: center;
+}
+/************************  Timer  *************************************************************************/
+#timer-wrapper
+{
+  background:rgb(37, 41, 24);
+  margin: 5% 30% 5% 30%;
+  width: 40%;
+  height: 200px;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 2px 14px 23px 6px rgba(16, 99, 27, 0.75);
+}
+#timer
+{
+  background: rgb(27, 211, 52);
+  height: 180px;
+  border-radius: 10px;
+  padding: 10px;
+}
+#timer-label
+{
+ font-size: 30px;
+}
+#time-left
+{
+  font-size: 100px;
+  font-family: 'Jolly Lodger', cursive;
+  
 }
 
-.App-link {
-  color: #09d3ac;
+#play-stop-buttons
+{
+  margin-bottom: 10px;
+}
+
+@media (min-width:900px)
+{
+  #timer-wrapper
+  {
+    margin: 5% 40% 5% 40%;
+    width: 20%;
+  }
+  #play-stop-buttons
+  {
+    margin-bottom: -40px;
+  }
 }
