@@ -6,66 +6,147 @@ class App extends React.Component {
     this.state = {
       breakLength: 5,
       sessionLength: 25,
-      timer: 1500
+      timer: 1500,
+      value: "",   //used for the paused mechanism in the CountDown function
+      countState: "paused",
+      timerType: "Session"
     }
     this.breakDecrement = this.breakDecrement.bind(this);
     this.breakIncrement = this.breakIncrement.bind(this);
     this.sessionDecrement = this.sessionDecrement.bind(this);
     this.sessionIncrement = this.sessionIncrement.bind(this);
     this.CountDown = this.CountDown.bind(this);
+    this.ShowTime = this.ShowTime.bind(this);
+    this.Reset = this.Reset.bind(this);
   }
   breakDecrement() {
-    if (this.state.breakLength > 1) {
-      this.setState({
-        breakLength: this.state.breakLength - 1
-      });
+    if ((this.state.breakLength > 1) && (this.state.countState == "paused")) {
+      if (this.state.timerType == "Break") {
+        this.setState({
+          breakLength: this.state.breakLength - 1,
+          timer: (this.state.breakLength - 1) * 60
+        });
+      }
+      else {
+        this.setState({
+          breakLength: this.state.breakLength - 1
+        });
+      }
     }
   }
   breakIncrement() {
-    if (this.state.breakLength < 60) {
-      this.setState({
-        breakLength: this.state.breakLength + 1
-      });
+    if ((this.state.breakLength < 60) && (this.state.countState == "paused")) {
+      if (this.state.timerType == "Break") {
+        this.setState({
+          breakLength: this.state.breakLength + 1,
+          timer: (this.state.breakLength + 1) * 60
+        });
+      }
+      else {
+        this.setState({
+          breakLength: this.state.breakLength + 1
+        });
+      }
     }
   }
   sessionDecrement() {
-    if (this.state.sessionLength > 1) {
-      this.setState({
-        sessionLength: this.state.sessionLength - 1
-      });
+    if ((this.state.sessionLength > 1) && (this.state.countState == "paused")) {
+      if (this.state.timerType == "Session") {
+        this.setState({
+          sessionLength: this.state.sessionLength - 1,
+          timer: (this.state.sessionLength - 1) * 60
+        });
+      }
+      else {
+        this.setState({
+          sessionLength: this.state.sessionLength - 1
+        });
+      }
     }
   }
   sessionIncrement() {
-    if (this.state.sessionLength < 60) {
+    if ((this.state.sessionLength < 60) && (this.state.countState == "paused")) {
+      if (this.state.timerType == "Session") {
+        this.setState({
+          sessionLength: this.state.sessionLength + 1,
+          timer: (this.state.sessionLength + 1) * 60
+        });
+      }
+      else {
+        this.setState({
+          sessionLength: this.state.sessionLength + 1
+        });
+      }
+    }
+  }
+  DecrementTimer() {
+    if (this.state.timer == 0) {
+      if (this.state.timerType == "Session") {
+        this.setState({
+          timerType: "Break",
+          timer: this.state.breakLength * 60
+        });
+      }
+      else {
+        this.setState({
+          timerType: "Session",
+          timer: this.state.sessionLength * 60
+        });
+      }
+    }
+    else {
       this.setState({
-        sessionLength: this.state.sessionLength + 1
+        timer: this.state.timer - 1
       });
     }
   }
-  DecrementTimer()
-  {
-    this.setState({
-      timer: this.state.timer - 1
-    });
+  CountDown() {
+    if (this.state.countState == "paused") {
+      var num = setInterval(() => { this.DecrementTimer() }, 1000);
+      this.setState({
+        value: num,
+        countState: "counting"
+      });
+    }
+    else {
+      this.setState({ countState: "paused" });
+      clearInterval(this.state.value);
+    }
   }
-  CountDown()
-  {
-    var value = setInterval(() => {this.DecrementTimer()},1000);
+  ShowTime() {
+    var minutes = Math.floor(this.state.timer / 60);
+    var seconds = this.state.timer % 60;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    return minutes + ":" + seconds;
+  }
+  Reset() {
+    clearInterval(this.state.value);
+    this.setState({
+      breakLength: 5,
+      sessionLength: 25,
+      timer: 1500,
+      value: "",
+      countState: "paused",
+      timerType: "Session"
+    });
   }
   render() {
     return (
       <div>
         <h1>Pomodoro Clock</h1>
         <div id="play-stop-buttons">
-          <button id="start_stop" class="fas fa-play time-buttons" onClick={this.CountDown}></button>
-          <button id="pause" class="fas fa-pause time-buttons"></button>
-          <button id="reset" class="fas fa-sync-alt time-buttons"></button>
+          <button id="start_stop" className='time-buttons' onClick={this.CountDown}>
+            <i className="fas fa-play">&nbsp;</i>
+            <i className="fas fa-pause"></i>
+          </button>
+          <button id="reset" className="fas fa-sync-alt time-buttons" onClick={this.Reset}></button>
         </div>
 
         <div id="timer-wrapper">
           <div id="timer">
-            <div id="timer-label">Session</div>
-            <div id="time-left">25:00</div>
+            <div id="timer-label">{this.state.timerType}</div>
+            <div id="time-left">{this.ShowTime()}</div>
           </div>
         </div>
 
