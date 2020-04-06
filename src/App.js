@@ -18,6 +18,7 @@ class App extends React.Component {
     this.CountDown = this.CountDown.bind(this);
     this.ShowTime = this.ShowTime.bind(this);
     this.Reset = this.Reset.bind(this);
+    this.Start = this.Start.bind(this);
   }
   breakDecrement() {
     if ((this.state.breakLength > 1) && (this.state.countState == "paused")) {
@@ -79,20 +80,31 @@ class App extends React.Component {
       }
     }
   }
+  Start()
+  {
+    if (this.state.timerType == "Session") {
+      this.setState({
+        timerType: "Break",
+        timer: this.state.breakLength * 60,
+        countState: "paused"
+      });
+      this.CountDown();
+    }
+    else {
+      this.setState({
+        timerType: "Session",
+        timer: this.state.sessionLength * 60,
+        countState: "paused"
+      });
+      this.CountDown();
+    }
+  }
   DecrementTimer() {
     if (this.state.timer == 0) {
-      if (this.state.timerType == "Session") {
-        this.setState({
-          timerType: "Break",
-          timer: this.state.breakLength * 60
-        });
-      }
-      else {
-        this.setState({
-          timerType: "Session",
-          timer: this.state.sessionLength * 60
-        });
-      }
+      clearInterval(this.state.value);
+      this.audioBeep.play();
+      setTimeout( this.Start(), 1000);
+      
     }
     else {
       this.setState({
@@ -122,6 +134,8 @@ class App extends React.Component {
   }
   Reset() {
     clearInterval(this.state.value);
+    this.audioBeep.pause();
+    this.audioBeep.currentTime = 0;
     this.setState({
       breakLength: 5,
       sessionLength: 25,
@@ -173,6 +187,9 @@ class App extends React.Component {
           </div>
 
         </div>
+        <audio id="beep" preload="auto" 
+          src="https://goo.gl/65cBl1"
+          ref={(audio) => { this.audioBeep = audio; }} />
       </div>
     )
   }
