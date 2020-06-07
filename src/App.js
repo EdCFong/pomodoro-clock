@@ -21,8 +21,8 @@ class App extends React.Component {
     this.Start = this.Start.bind(this);
   }
   breakDecrement() {
-    if ((this.state.breakLength > 1) && (this.state.countState == "paused")) {
-      if (this.state.timerType == "Break") {
+    if ((this.state.breakLength > 1) && (this.state.countState === "paused")) {
+      if (this.state.timerType === "Break") {
         this.setState({
           breakLength: this.state.breakLength - 1,
           timer: (this.state.breakLength - 1) * 60
@@ -36,8 +36,8 @@ class App extends React.Component {
     }
   }
   breakIncrement() {
-    if ((this.state.breakLength < 60) && (this.state.countState == "paused")) {
-      if (this.state.timerType == "Break") {
+    if ((this.state.breakLength < 60) && (this.state.countState === "paused")) {
+      if (this.state.timerType === "Break") {
         this.setState({
           breakLength: this.state.breakLength + 1,
           timer: (this.state.breakLength + 1) * 60
@@ -51,8 +51,8 @@ class App extends React.Component {
     }
   }
   sessionDecrement() {
-    if ((this.state.sessionLength > 1) && (this.state.countState == "paused")) {
-      if (this.state.timerType == "Session") {
+    if ((this.state.sessionLength > 1) && (this.state.countState === "paused")) {
+      if (this.state.timerType === "Session") {
         this.setState({
           sessionLength: this.state.sessionLength - 1,
           timer: (this.state.sessionLength - 1) * 60
@@ -66,8 +66,8 @@ class App extends React.Component {
     }
   }
   sessionIncrement() {
-    if ((this.state.sessionLength < 60) && (this.state.countState == "paused")) {
-      if (this.state.timerType == "Session") {
+    if ((this.state.sessionLength < 60) && (this.state.countState === "paused")) {
+      if (this.state.timerType === "Session") {
         this.setState({
           sessionLength: this.state.sessionLength + 1,
           timer: (this.state.sessionLength + 1) * 60
@@ -80,9 +80,8 @@ class App extends React.Component {
       }
     }
   }
-  Start()
-  {
-    if (this.state.timerType == "Session") {
+  Start() {
+    if (this.state.timerType === "Session") {
       this.setState({
         timerType: "Break",
         timer: this.state.breakLength * 60,
@@ -100,11 +99,10 @@ class App extends React.Component {
     }
   }
   DecrementTimer() {
-    if (this.state.timer == 0) {
+    if (this.state.timer === 0) {
       clearInterval(this.state.value);
       this.audioBeep.play();
-      setTimeout( this.Start(), 1000);
-      
+      setTimeout(this.Start(), 1000);
     }
     else {
       this.setState({
@@ -113,7 +111,7 @@ class App extends React.Component {
     }
   }
   CountDown() {
-    if (this.state.countState == "paused") {
+    if (this.state.countState === "paused") {
       var num = setInterval(() => { this.DecrementTimer() }, 1000);
       this.setState({
         value: num,
@@ -187,7 +185,7 @@ class App extends React.Component {
           </div>
 
         </div>
-        <audio id="beep" preload="auto" 
+        <audio id="beep" preload="auto"
           src="https://goo.gl/65cBl1"
           ref={(audio) => { this.audioBeep = audio; }} />
       </div>
